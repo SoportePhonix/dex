@@ -1,0 +1,2 @@
+# dex
+Docker exec auxiliar
