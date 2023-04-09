@@ -1,0 +1,20 @@
+#!/bin/bash
+i=1
+container_names=()
+while IFS= read -r line
+do
+  container_names+=("$line")
+  echo "$i. $line"
+  i=$((i+1))
+done < <(docker ps --filter "status=running" --format "{{.Names}}" | sort -n)
+
+echo "Elige el contenedor al que deseas ingresar:"
+read container_number
+
+if [[ "$container_number" =~ ^[0-9]+$ ]] && [ "$container_number" -gt 0 ] && [ "$container_number" -le "${#container_names[@]}" ]
+then
+  container_name="${container_names[$((container_number-1))]}"
+  docker exec -it "$container_name" /bin/bash
+else
+  echo "ERROR: Elige un número válido de contenedor"
+fi
