@@ -2,9 +2,12 @@
 
 
 # Muestra los contenedores Docker en estado "running" en color verde
-docker ps -a --filter "status=running" | awk '{gsub(/./,"\033[32m&\033[0m"); print}'
+docker ps -a --filter "status=running" --format "table {{.ID}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}\t{{.Ports}}\t{{.Names}}" | awk '{gsub(/./,"\033[32m&\033[0m"); print}'
 
 echo -e "\n"
+
+# Pide al usuario que elija un contenedor
+echo "Elige el contenedor al que deseas ingresar:" | awk '{gsub(/./,"\033[31m&\033[0m"); print}'
 
 
 # Almacena los nombres de los contenedores en un arreglo
@@ -20,7 +23,7 @@ done < <(docker ps --filter "status=running" --format "{{.Names}}" | sort -n)
 echo -e "\n"
 
 # Pide al usuario que elija un contenedor
-echo "Elige el contenedor al que deseas ingresar:" | awk '{gsub(/./,"\033[31m&\033[0m"); print}'
+echo "Selecciona un numero de la lista:" | awk '{gsub(/./,"\033[31m&\033[0m"); print}'
 read container_number
 
 
