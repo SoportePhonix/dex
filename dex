@@ -1,16 +1,30 @@
 #!/bin/bash
+
+
+# Muestra los contenedores Docker en estado "running" en color verde
+docker ps -a --filter "status=running" | awk '{gsub(/./,"\033[32m&\033[0m"); print}'
+
+echo -e "\n"
+
+
+# Almacena los nombres de los contenedores en un arreglo
 i=1
 container_names=()
 while IFS= read -r line
 do
   container_names+=("$line")
-  echo "$i. $line"
+  echo "$i. $line" | awk '{gsub(/./,"\033[33m&\033[0m"); print}'
   i=$((i+1))
 done < <(docker ps --filter "status=running" --format "{{.Names}}" | sort -n)
 
-echo "Elige el contenedor al que deseas ingresar:"
+echo -e "\n"
+
+# Pide al usuario que elija un contenedor
+echo "Elige el contenedor al que deseas ingresar:" | awk '{gsub(/./,"\033[31m&\033[0m"); print}'
 read container_number
 
+
+# Ejecuta un shell en el contenedor elegido
 if [[ "$container_number" =~ ^[0-9]+$ ]] && [ "$container_number" -gt 0 ] && [ "$container_number" -le "${#container_names[@]}" ]
 then
   container_name="${container_names[$((container_number-1))]}"
