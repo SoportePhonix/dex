@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 
 # Muestra los contenedores Docker en estado "running" en color verde
